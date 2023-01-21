@@ -22,8 +22,18 @@ def brackets_match?(s)
     if open_brackets.include? char
       stack.append(char)
     elsif close_brackets.include? char
-      return false unless stack.pop == char
+      if close_brackets.length > 0 && open_brackets[close_brackets.find_index(char)] == stack[stack.length-1]
+        stack.pop
+      else
+        return false
+      end
     end
+  end
+
+  if stack.length == 0
+    return true
+  else
+    return false
   end
 end
 
@@ -73,13 +83,19 @@ class Book
 
   def formatted_price
     dollars, cents = @price.to_s.split('.')
+    cents = '' unless cents
     dollars = dollars.to_i
-    cents = cents.to_i
-    if dollars > 0
-      res = dollars.to_s + ' dollars and ' + cents.to_s + ' cents'
+    cents = cents.length == 1 ? (cents + '0').to_i : cents.to_i
+    if dollars > 0 && cents > 0
+      dollars = dollars > 1 ? dollars.to_s + ' dollars' : dollars.to_s + ' dollar'
+      cents = cents > 1 ? ' and ' + cents.to_s + ' cents' : ' and ' + cents.to_s + ' cent'
+    elsif dollars > 0
+      dollars = dollars > 1 ? dollars.to_s + ' dollars' : dollars.to_s + ' dollar'
+      cents = ''
     else
-      res = cents.to_s + ' cents'
+      dollars = ''
+      cents = cents > 1 ? cents.to_s + ' cents' : cents.to_s + ' cent'
     end
-    res
+    dollars + cents
   end
 end
