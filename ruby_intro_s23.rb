@@ -1,14 +1,35 @@
 # Part 1
 def two_sum?(a, n)
-  # ADD YOUR CODE HERE
-end
+    hash = {}
+    a.each_with_index do |num, idx|
+        if hash.has_key?(n - num)
+            return true 
+        end 
+        hash[num] = idx
+    end
+    return false 
+end 
 
 def max_sub_array(a)
-  # ADD YOUR CODE HERE
+    max_so_far = sum = a[0]
+    a[1...-1].each do |num|
+        sum = [num, sum + num].max
+        max_so_far = sum if sum > max_so_far
+    end 
+    return max_so_far
 end
 
 def group_anagrams(a)
-  # ADD YOUR CODE HERE
+  hash = {}
+  a.each do |word|
+    sorted_word = word.chars.sort.join
+    if hash.has_key?(sorted_word)
+        hash[sorted_word].push(word)
+    else 
+        hash[sorted_word] = [word]
+    end
+   end
+    return hash.values
 end
 
 # Part 2
