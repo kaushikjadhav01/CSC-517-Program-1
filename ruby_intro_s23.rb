@@ -12,7 +12,7 @@ end
 
 def max_sub_array(a)
     max_so_far = sum = a[0]
-    a[1...-1].each do |num|
+    a[1..-1].each do |num|
         sum = [num, sum + num].max
         max_so_far = sum if sum > max_so_far
     end 
